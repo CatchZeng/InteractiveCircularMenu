@@ -37,13 +37,33 @@ class ViewController: UIViewController {
         button5.setTitle("5", for: .normal)
         button5.backgroundColor = UIColor.red
         
-        items = [button1, button2, button3, button4, button5]
+        let button6 = UIButton()
+        button6.setTitle("6", for: .normal)
+        button6.backgroundColor = UIColor.red
+        
+        let button7 = UIButton()
+        button7.setTitle("7", for: .normal)
+        button7.backgroundColor = UIColor.red
+        
+        let button8 = UIButton()
+        button8.setTitle("8", for: .normal)
+        button8.backgroundColor = UIColor.red
+        
+        let button9 = UIButton()
+        button9.setTitle("9", for: .normal)
+        button9.backgroundColor = UIColor.red
+        
+        let button10 = UIButton()
+        button10.setTitle("10", for: .normal)
+        button10.backgroundColor = UIColor.red
+        
+        items = [button1, button2, button3, button4, button5, button6, button7]//, button8, button9, button10]
         menuView.dataSource = self
         menuView.delegate = self
     }
 }
 
-extension ViewController: InteractiveCircularMenuDataSource {
+extension ViewController: InteractiveCircularMenuDataSource {    
     func numberOfItems(in menu: InteractiveCircularMenu) -> Int {
         return items.count
     }

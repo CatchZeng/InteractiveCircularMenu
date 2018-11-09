@@ -57,7 +57,7 @@ open class InteractiveCircularMenu: UIView {
                 item.isUserInteractionEnabled = false
             }
             let changeX = recognizer.location(in: self).x - originPoint.x
-            placeItems(dX: changeX*2)
+            placeItems(dX: changeX)
             originPoint = recognizer.location(in: self)
             
         case .ended:
@@ -106,19 +106,13 @@ open class InteractiveCircularMenu: UIView {
     
     private func placeItems(_ items: [UIButton]) {
         let width = frame.size.width
-        
         originRotation = 0
+        
         for i in 0..<items.count {
-            let radius = width/2 - circularWidth/2 + 3
-            var angle = Double.pi + Double(i)*(Double.pi/4)
-            
-            if items.count > 3 && items.count < 8 {
-                angle += Double.pi/8.6
-            } else if items.count == 3 {
-                angle = (Double.pi + Double(i) * (Double.pi/3)) + (Double.pi/6)
-            } else if items.count == 2 {
-                angle = (Double.pi + Double(i) * (Double.pi/2)) + (Double.pi/4)
-            }
+            let radius = width/2 - circularWidth/2
+            let offset = Double(dataSource?.startAngleOffset(self) ?? 0)/180.0*Double.pi
+            let spacing = Double(dataSource?.spacingAngle(self) ?? 0)/180.0*Double.pi
+            let angle = Double.pi + Double(i)*spacing + offset
             
             let xx = cos(angle) * Double(radius)
             let yy = sin(angle) * Double(radius)
@@ -126,23 +120,6 @@ open class InteractiveCircularMenu: UIView {
             let item = items[i]
             item.center = CGPoint(x: xx,y: yy)
             item.transform = CGAffineTransform(rotationAngle: 0)
-        }
-    }
-    
-    private func displayItems(_ items: [UIButton]) {
-        for i in 0..<items.count {
-            let angle = (Double.pi + Double(i)*(Double.pi/4))
-            var angleToCompare = 2*Double.pi
-            if items.count < 8 {
-                angleToCompare -= Double.pi/8.6
-            }
-            
-            let item = items[i]
-            if angle > angleToCompare {
-                item.alpha = 0
-            }else{
-                item.alpha = 1
-            }
         }
     }
     
@@ -201,7 +178,7 @@ open class InteractiveCircularMenu: UIView {
         itemsContainerView.frame = CGRect(x: 0, y: 0, width: width, height: height*2)
         itemsContainerView.backgroundColor = UIColor.clear
         itemsContainerView.layer.cornerRadius = width / 2
-        self.addSubview(itemsContainerView)
+        addSubview(itemsContainerView)
         itemsContainerView.bounds = CGRect(x: -width/2, y: -height, width: width, height: height*2)
     }
 }
