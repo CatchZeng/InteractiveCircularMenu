@@ -1,0 +1,16 @@
+PODS:
+  - InteractiveCircularMenu (0.1.0)
+
+DEPENDENCIES:
+  - InteractiveCircularMenu (from `../`)
+
+EXTERNAL SOURCES:
+  InteractiveCircularMenu:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  InteractiveCircularMenu: aa378ce36c36c12cf77bd31319fb14bc82c66d56
+
+PODFILE CHECKSUM: 0e6f9125e8cfebb9fdda8cde30e2a61984d2ac19
+
+COCOAPODS: 1.5.3

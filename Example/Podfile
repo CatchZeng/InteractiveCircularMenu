@@ -1,0 +1,10 @@
+use_frameworks!
+
+target 'InteractiveCircularMenu_Example' do
+  pod 'InteractiveCircularMenu', :path => '../'
+
+  target 'InteractiveCircularMenu_Tests' do
+    inherit! :search_paths
+
+  end
+end

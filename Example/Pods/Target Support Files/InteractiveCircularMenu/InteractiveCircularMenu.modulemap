@@ -1,0 +1,6 @@
+framework module InteractiveCircularMenu {
+  umbrella header "InteractiveCircularMenu-umbrella.h"
+
+  export *
+  module * { export * }
+}
