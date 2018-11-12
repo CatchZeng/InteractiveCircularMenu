@@ -103,6 +103,7 @@ open class InteractiveCircularMenu: UIView {
             for item in items {
                 item.isUserInteractionEnabled = true
             }
+            springBack()
             break
         default:
             break
@@ -147,6 +148,27 @@ open class InteractiveCircularMenu: UIView {
     }
     
     private func springBack() {
+        let angle = transformToAngle(rotation: originRotation)
+        if angle > maxSpringBackAngle-startAngleOffset {
+            let value = (maxSpringBackAngle-startAngleOffset)/180.0*CGFloat.pi
+            doSpringbackAnimation(value)
+            
+        } else if angle < minSpringBackAngle-startAngleOffset {
+            let value = (minSpringBackAngle-startAngleOffset)/180.0*CGFloat.pi
+            doSpringbackAnimation(value)
+        }
+    }
+    
+    fileprivate func doSpringbackAnimation(_ value: CGFloat) {
+        originRotation = value
+        let items = self.getItems()
+        UIView.animate(withDuration: 0.5) {
+            self.itemsContainerView.transform = CGAffineTransform(rotationAngle: self.originRotation)
+            for item in items {
+                item.transform = CGAffineTransform(rotationAngle: -self.originRotation)
+            }
+        }
+        updateItemsVisibility(items: items)
     }
     
     private func transformToAngle(rotation: CGFloat) -> CGFloat {
