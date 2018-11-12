@@ -36,8 +36,6 @@ open class InteractiveCircularMenu: UIView {
     }
     
     open override func draw(_ rect: CGRect) {
-        print("draw")
-        
         addCircular()
         addItemsContainerView()
         addGesture()
@@ -149,7 +147,7 @@ open class InteractiveCircularMenu: UIView {
         let radius = width/2 - circularWidth/2
         let offset = Double(dataSource?.startAngleOffset?(self) ?? defaultStartAngleOffset)/180.0*Double.pi
         let spacing = Double(dataSource?.spacingAngle?(self) ?? defaultSpacingAngle)/180.0*Double.pi
-        
+            
         for i in 0..<items.count {
             let angle = Double.pi + Double(i)*spacing + offset
             
