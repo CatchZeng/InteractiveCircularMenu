@@ -93,15 +93,29 @@ open class InteractiveCircularMenu: UIView {
     
     @objc func onItemClicked(_ sender: UIButton){
         delegate?.menu(self, didSelectAt: sender.tag)
-        print("click: \(sender.tag)")
     }
     
-    private func placeItems(dX: CGFloat){
-        originRotation = originRotation + dX/100.0
-        self.itemsContainerView.transform = CGAffineTransform(rotationAngle: originRotation)
+    private func placeItems(dX: CGFloat) {
+        let value = originRotation + dX/100.0
+        let angle = transformToAngle(rotation: value)
+        if let maxAngle = dataSource?.maxAngle(self), let offset = dataSource?.startAngleOffset(self), angle > (maxAngle-offset) {
+            return
+        }
+        
+        if let minAngle = dataSource?.minAngle(self), let offset = dataSource?.startAngleOffset(self), angle < (minAngle-offset) {
+            return
+        }
+        
+        print("angle: \(angle)")
+        originRotation = value
+        itemsContainerView.transform = CGAffineTransform(rotationAngle: originRotation)
         for item in getItems() {
             item.transform = CGAffineTransform(rotationAngle: -originRotation)
         }
+    }
+    
+    private func transformToAngle(rotation: CGFloat) -> CGFloat {
+        return rotation*(180.0/CGFloat.pi)
     }
     
     private func placeItems(_ items: [UIButton]) {
