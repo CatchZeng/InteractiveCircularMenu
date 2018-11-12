@@ -73,6 +73,14 @@ extension ViewController: InteractiveCircularMenuDataSource {
     func spacingAngle(_ menu: InteractiveCircularMenu) -> CGFloat {
         return 30
     }
+    
+    func startAngleOffset(_ menu: InteractiveCircularMenu) -> CGFloat {
+        return 60
+    }
+    
+    func maxAngle(_ menu: InteractiveCircularMenu) -> CGFloat {
+        return 90
+    }
 }
 
 extension ViewController: InteractiveCircularMenuDelegate {
