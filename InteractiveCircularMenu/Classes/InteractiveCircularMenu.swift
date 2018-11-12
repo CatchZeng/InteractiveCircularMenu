@@ -33,6 +33,12 @@ open class InteractiveCircularMenu: UIView {
         let sCount = itemCount < 3 ? 0 : (itemCount-2)
         return dataSource?.minAngle?(self) ?? -CGFloat(sCount)*spacingAngle
     }
+    private var maxSpringBackAngle: CGFloat {
+        return dataSource?.maxSpringBackAngle?(self) ?? maxAngle-spacingAngle
+    }
+    private var minSpringBackAngle: CGFloat {
+        return dataSource?.minSpringBackAngle?(self) ?? minAngle+spacingAngle
+    }
     private var spacingAngle: CGFloat {
         return dataSource?.spacingAngle?(self) ?? 25
     }

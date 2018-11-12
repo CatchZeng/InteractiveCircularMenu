@@ -79,11 +79,11 @@ extension ViewController: InteractiveCircularMenuDataSource {
     }
     
     func maxAngle(_ menu: InteractiveCircularMenu) -> CGFloat {
-        return 90
+        return 120//90+30
     }
     
     func minAngle(_ menu: InteractiveCircularMenu) -> CGFloat {
-        return CGFloat(60-30*(items.count-2));
+        return CGFloat(60-30*(items.count-2))-30
     }
 }
 
