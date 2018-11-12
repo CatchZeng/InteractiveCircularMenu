@@ -42,17 +42,22 @@ class ViewController: UIViewController {
 //        createButton(no: 23)]
         menuView.dataSource = self
         menuView.delegate = self
+        menuView.menuColor = UIColor.white
     }
     
     private func createButton(no: Int) -> UIButton {
         let button = UIButton()
         button.setTitle("\(no)", for: .normal)
-        button.backgroundColor = UIColor.red
+        button.setImage(UIImage(named: "l\(no)"), for: .normal)
         return button
     }
 }
 
-extension ViewController: InteractiveCircularMenuDataSource {    
+extension ViewController: InteractiveCircularMenuDataSource {
+    func circularWidth(in menu: InteractiveCircularMenu) -> CGFloat {
+        return 80
+    }
+    
     func numberOfItems(in menu: InteractiveCircularMenu) -> Int {
         return items.count
     }
@@ -62,7 +67,7 @@ extension ViewController: InteractiveCircularMenuDataSource {
     }
     
     func menu(_ menu: InteractiveCircularMenu, itemSizeAt index: Int) -> CGSize {
-        return CGSize(width: 40, height: 40)
+        return CGSize(width: 75, height: 75)
     }
     
     func spacingAngle(_ menu: InteractiveCircularMenu) -> CGFloat {

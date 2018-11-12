@@ -16,14 +16,9 @@ open class InteractiveCircularMenu: UIView {
             reload()
         }
     }
-    public var circularWidth: CGFloat = 80 {
-        didSet {
-            reload()
-        }
-    }
-    
     private let defaultSpacingAngle: CGFloat = 25
     private let defaultStartAngleOffset: CGFloat = 25
+    private let defaultCircularWidth: CGFloat = 80
     private let itemsContainerView = UIView()
     private let circularLayer = CAShapeLayer()
     private var originRotation: CGFloat = 0.0
@@ -144,6 +139,7 @@ open class InteractiveCircularMenu: UIView {
         let width = frame.size.width
         originRotation = 0
         
+        let circularWidth = dataSource?.circularWidth(in: self) ?? defaultCircularWidth
         let radius = width/2 - circularWidth/2
         let offset = Double(dataSource?.startAngleOffset?(self) ?? defaultStartAngleOffset)/180.0*Double.pi
         let spacing = Double(dataSource?.spacingAngle?(self) ?? defaultSpacingAngle)/180.0*Double.pi
@@ -187,6 +183,7 @@ open class InteractiveCircularMenu: UIView {
         
         menuColor.set()
         
+        let circularWidth = dataSource?.circularWidth(in: self) ?? defaultCircularWidth
         let path = UIBezierPath()
         path.lineWidth = 1.0
         path.move(to: CGPoint(x: 0, y: height))
@@ -209,6 +206,10 @@ open class InteractiveCircularMenu: UIView {
         circularLayer.path = path.cgPath
         circularLayer.fillColor = UIColor.clear.cgColor
         circularLayer.backgroundColor = UIColor.clear.cgColor
+        circularLayer.shadowOffset = CGSize(width: 1, height: 1)
+        circularLayer.shadowOpacity = 0.8
+        circularLayer.shadowColor = UIColor.black.cgColor
+        circularLayer.shadowRadius = 4.0
         layer.addSublayer(circularLayer)
     }
     
