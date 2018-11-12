@@ -13,12 +13,12 @@ open class InteractiveCircularMenu: UIView {
     public weak var delegate: InteractiveCircularMenuDelegate?
     public var menuColor = UIColor(red: 41/255, green: 128/255, blue : 185/255, alpha: 1.0) {
         didSet {
-            setNeedsDisplay()
+            reload()
         }
     }
     public var circularWidth: CGFloat = 80 {
         didSet {
-            setNeedsDisplay()
+            reload()
         }
     }
     
@@ -27,6 +27,10 @@ open class InteractiveCircularMenu: UIView {
     private var originRotation: CGFloat = 0.0
     private var originPoint = CGPoint()
 
+    public func reload() {
+        setNeedsDisplay()
+    }
+    
     open override func draw(_ rect: CGRect) {
         addCircular()
         addItemsContainerView()
@@ -96,7 +100,8 @@ open class InteractiveCircularMenu: UIView {
     }
     
     private func placeItems(dX: CGFloat) {
-        let value = originRotation + dX/100.0
+        let speedRatio = dataSource?.speedRatio(self) ?? 1.0
+        let value = originRotation + dX/100.0*speedRatio
         let angle = transformToAngle(rotation: value)
         if let maxAngle = dataSource?.maxAngle(self), let offset = dataSource?.startAngleOffset(self), angle > (maxAngle-offset) {
             return

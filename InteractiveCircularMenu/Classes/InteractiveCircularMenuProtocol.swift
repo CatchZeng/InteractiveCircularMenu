@@ -12,6 +12,7 @@ import UIKit
     func numberOfItems(in menu: InteractiveCircularMenu) -> Int
     func menu(_ menu: InteractiveCircularMenu, itemAt index: Int) -> UIButton
     func menu(_ menu: InteractiveCircularMenu, itemSizeAt index: Int) -> CGSize
+    @objc optional func speedRatio(_ menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func startAngleOffset(_ menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func spacingAngle(_ menu: InteractiveCircularMenu) -> Int
     @objc optional func maxAngle(_ menu: InteractiveCircularMenu) -> CGFloat
@@ -37,5 +38,9 @@ extension InteractiveCircularMenuDataSource {
     
     func minAngle(_ menu: InteractiveCircularMenu) -> CGFloat {
         return 0
+    }
+    
+    func speedRatio(_ menu: InteractiveCircularMenu) -> CGFloat {
+        return 1.0
     }
 }
