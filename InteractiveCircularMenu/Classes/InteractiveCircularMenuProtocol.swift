@@ -18,6 +18,8 @@ import UIKit
     @objc optional func spacingAngle(_ menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func maxAngle(_ menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func minAngle(_ menu: InteractiveCircularMenu) -> CGFloat
+    @objc optional func minSpringBackAngle(_ menu: InteractiveCircularMenu) -> CGFloat
+    @objc optional func maxSpringBackAngle(_ menu: InteractiveCircularMenu) -> CGFloat
 }
 
 public protocol InteractiveCircularMenuDelegate: class {

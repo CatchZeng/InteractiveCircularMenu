@@ -16,15 +16,35 @@ open class InteractiveCircularMenu: UIView {
             reload()
         }
     }
-    private let defaultSpacingAngle: CGFloat = 25
-    private let defaultStartAngleOffset: CGFloat = 25
-    private let defaultCircularWidth: CGFloat = 80
     private let itemsContainerView = UIView()
     private let circularLayer = CAShapeLayer()
     private var originRotation: CGFloat = 0.0
     private var originPoint = CGPoint()
     private var originSize = CGSize.zero
     private var panGesture: UIPanGestureRecognizer?
+    
+    private var itemCount: Int {
+        return dataSource?.numberOfItems(in: self) ?? 0
+    }
+    private var maxAngle: CGFloat {
+        return dataSource?.maxAngle?(self) ?? 180-spacingAngle
+    }
+    private var minAngle: CGFloat {
+        let sCount = itemCount < 3 ? 0 : (itemCount-2)
+        return dataSource?.minAngle?(self) ?? -CGFloat(sCount)*spacingAngle
+    }
+    private var spacingAngle: CGFloat {
+        return dataSource?.spacingAngle?(self) ?? 25
+    }
+    private var circularWidth: CGFloat {
+        return dataSource?.circularWidth(in: self) ?? 80
+    }
+    private var speedRatio: CGFloat {
+        return dataSource?.speedRatio?(self) ?? 1.0
+    }
+    private var startAngleOffset: CGFloat {
+        return dataSource?.startAngleOffset?(self) ?? 25
+    }
     
     public func reload() {
         setNeedsDisplay()
@@ -84,11 +104,6 @@ open class InteractiveCircularMenu: UIView {
     }
     
     private func addItems() {
-        guard let itemCount = dataSource?.numberOfItems(in: self), itemCount > 0
-            else {
-            return
-        }
-        
         var items: [UIButton] = [UIButton]()
         for i in 0..<itemCount {
             if let item = dataSource?.menu(self, itemAt: i), let size = dataSource?.menu(self, itemSizeAt: i) {
@@ -110,15 +125,9 @@ open class InteractiveCircularMenu: UIView {
     
     private func placeItems(dX: CGFloat) {
         let items = getItems()
-        let speedRatio = dataSource?.speedRatio?(self) ?? 1.0
         let value = originRotation + dX/100.0*speedRatio
         let angle = transformToAngle(rotation: value)
-        let offset = dataSource?.startAngleOffset?(self) ?? defaultStartAngleOffset
-        let spacing = dataSource?.spacingAngle?(self) ?? defaultSpacingAngle
-        let maxAngle = dataSource?.maxAngle?(self) ?? 180-spacing
-        let sCount = items.count < 3 ? 0 : (items.count-2)
-        let minAngle = dataSource?.minAngle?(self) ?? -CGFloat(sCount)*spacing
-        if angle > (maxAngle-offset) || angle < (minAngle-offset) {
+        if angle > (maxAngle-startAngleOffset) || angle < (minAngle-startAngleOffset) {
             return
         }
         
@@ -131,6 +140,9 @@ open class InteractiveCircularMenu: UIView {
         updateItemsVisibility(items: items)
     }
     
+    private func springBack() {
+    }
+    
     private func transformToAngle(rotation: CGFloat) -> CGFloat {
         return rotation*(180.0/CGFloat.pi)
     }
@@ -139,16 +151,15 @@ open class InteractiveCircularMenu: UIView {
         let width = frame.size.width
         originRotation = 0
         
-        let circularWidth = dataSource?.circularWidth(in: self) ?? defaultCircularWidth
         let radius = width/2 - circularWidth/2
-        let offset = Double(dataSource?.startAngleOffset?(self) ?? defaultStartAngleOffset)/180.0*Double.pi
-        let spacing = Double(dataSource?.spacingAngle?(self) ?? defaultSpacingAngle)/180.0*Double.pi
+        let offset = startAngleOffset/180.0*CGFloat.pi
+        let spacing = spacingAngle/180.0*CGFloat.pi
             
         for i in 0..<items.count {
-            let angle = Double.pi + Double(i)*spacing + offset
+            let angle = .pi + CGFloat(i)*spacing + offset
             
-            let xx = cos(angle) * Double(radius)
-            let yy = sin(angle) * Double(radius)
+            let xx = cos(angle) * radius
+            let yy = sin(angle) * radius
             
             let item = items[i]
             item.center = CGPoint(x: xx,y: yy)
@@ -156,21 +167,6 @@ open class InteractiveCircularMenu: UIView {
         }
         
         updateItemsVisibility(items: items)
-    }
-    
-    fileprivate func getItems() -> [UIButton] {
-        guard let itemCount = dataSource?.numberOfItems(in: self), itemCount > 0
-            else {
-                return []
-        }
-        
-        var items: [UIButton] = [UIButton]()
-        for i in 0..<itemCount {
-            if let item = dataSource?.menu(self, itemAt: i) {
-                items.append(item)
-            }
-        }
-        return items
     }
     
     private func addCircular() {
@@ -183,7 +179,6 @@ open class InteractiveCircularMenu: UIView {
         
         menuColor.set()
         
-        let circularWidth = dataSource?.circularWidth(in: self) ?? defaultCircularWidth
         let path = UIBezierPath()
         path.lineWidth = 1.0
         path.move(to: CGPoint(x: 0, y: height))
@@ -230,17 +225,29 @@ open class InteractiveCircularMenu: UIView {
     }
     
     private func updateItemsVisibility(items: [UIButton]) {
-        let spacing = dataSource?.spacingAngle?(self) ?? defaultSpacingAngle
-        let offset = dataSource?.startAngleOffset?(self) ?? defaultStartAngleOffset
         let angle = transformToAngle(rotation: originRotation)
         for i in 0..<items.count {
             let item = items[i]
-            let placeAngle = offset + CGFloat(i)*spacing
+            let placeAngle = startAngleOffset + CGFloat(i)*spacingAngle
             if angle>(-placeAngle-10) && angle<(180-placeAngle+10) {
                 item.isHidden = false
             } else {
                 item.isHidden = true
             }
         }
+    }
+    
+    private func getItems() -> [UIButton] {
+        if itemCount < 1 {
+            return []
+        }
+        
+        var items: [UIButton] = [UIButton]()
+        for i in 0..<itemCount {
+            if let item = dataSource?.menu(self, itemAt: i) {
+                items.append(item)
+            }
+        }
+        return items
     }
 }
