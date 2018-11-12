@@ -22,8 +22,8 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ojx-4O-pSj" customClass="InteractiveCircularMenu" customModule="InteractiveCircularMenu">
-                                <rect key="frame" x="0.0" y="240" width="375" height="187.5"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="37.5" y="517" width="300" height="150"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ojx-4O-pSj" secondAttribute="height" multiplier="2:1" id="EqG-Hd-V8E"/>
                                 </constraints>
@@ -31,8 +31,8 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ojx-4O-pSj" firstAttribute="width" secondItem="kh9-bI-dsS" secondAttribute="width" id="LKB-gV-efi"/>
-                            <constraint firstItem="ojx-4O-pSj" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="c9r-T3-F1v"/>
+                            <constraint firstAttribute="bottom" secondItem="ojx-4O-pSj" secondAttribute="bottom" id="28C-Qu-Lbs"/>
+                            <constraint firstItem="ojx-4O-pSj" firstAttribute="width" secondItem="kh9-bI-dsS" secondAttribute="width" multiplier="0.8" id="LKB-gV-efi"/>
                             <constraint firstItem="ojx-4O-pSj" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="klC-67-oi5"/>
                         </constraints>
                     </view>

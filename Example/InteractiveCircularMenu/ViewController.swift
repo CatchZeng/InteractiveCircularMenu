@@ -17,49 +17,38 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let button1 = UIButton()
-        button1.setTitle("1", for: .normal)
-        button1.backgroundColor = UIColor.red
-        
-        let button2 = UIButton()
-        button2.setTitle("2", for: .normal)
-        button2.backgroundColor = UIColor.red
-        
-        let button3 = UIButton()
-        button3.setTitle("3", for: .normal)
-        button3.backgroundColor = UIColor.red
-        
-        let button4 = UIButton()
-        button4.setTitle("4", for: .normal)
-        button4.backgroundColor = UIColor.red
-        
-        let button5 = UIButton()
-        button5.setTitle("5", for: .normal)
-        button5.backgroundColor = UIColor.red
-        
-        let button6 = UIButton()
-        button6.setTitle("6", for: .normal)
-        button6.backgroundColor = UIColor.red
-        
-        let button7 = UIButton()
-        button7.setTitle("7", for: .normal)
-        button7.backgroundColor = UIColor.red
-        
-        let button8 = UIButton()
-        button8.setTitle("8", for: .normal)
-        button8.backgroundColor = UIColor.red
-        
-        let button9 = UIButton()
-        button9.setTitle("9", for: .normal)
-        button9.backgroundColor = UIColor.red
-        
-        let button10 = UIButton()
-        button10.setTitle("10", for: .normal)
-        button10.backgroundColor = UIColor.red
-        
-        items = [button1, button2, button3, button4, button5, button6, button7, button8, button9, button10]
+        items = [createButton(no: 1),
+        createButton(no: 2),
+        createButton(no: 3),
+        createButton(no: 4)]
+//        createButton(no: 5),
+//        createButton(no: 6),
+//        createButton(no: 7),
+//        createButton(no: 8),
+//        createButton(no: 9),
+//        createButton(no: 10),
+//        createButton(no: 11),
+//        createButton(no: 12),
+//        createButton(no: 13),
+//        createButton(no: 14),
+//        createButton(no: 15),
+//        createButton(no: 16),
+//        createButton(no: 17),
+//        createButton(no: 18),
+//        createButton(no: 19),
+//        createButton(no: 20),
+//        createButton(no: 21),
+//        createButton(no: 22),
+//        createButton(no: 23)]
         menuView.dataSource = self
         menuView.delegate = self
+    }
+    
+    private func createButton(no: Int) -> UIButton {
+        let button = UIButton()
+        button.setTitle("\(no)", for: .normal)
+        button.backgroundColor = UIColor.red
+        return button
     }
 }
 
@@ -77,7 +66,7 @@ extension ViewController: InteractiveCircularMenuDataSource {
     }
     
     func spacingAngle(_ menu: InteractiveCircularMenu) -> CGFloat {
-        return 50
+        return 30
     }
 }
 

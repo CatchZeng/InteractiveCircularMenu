@@ -11,9 +11,6 @@ import UIKit
 open class InteractiveCircularMenu: UIView {
     public weak var dataSource: InteractiveCircularMenuDataSource?
     public weak var delegate: InteractiveCircularMenuDelegate?
-    private let defaultSpacingAngle: CGFloat = 25
-    private let defaultStartAngleOffset: CGFloat = 25
-    private let defaultMaxAngle: CGFloat = 90
     public var menuColor = UIColor(red: 41/255, green: 128/255, blue : 185/255, alpha: 1.0) {
         didSet {
             reload()
@@ -25,27 +22,43 @@ open class InteractiveCircularMenu: UIView {
         }
     }
     
+    private let defaultSpacingAngle: CGFloat = 25
+    private let defaultStartAngleOffset: CGFloat = 25
     private let itemsContainerView = UIView()
     private let circularLayer = CAShapeLayer()
     private var originRotation: CGFloat = 0.0
     private var originPoint = CGPoint()
-
+    private var originSize = CGSize.zero
+    private var panGesture: UIPanGestureRecognizer?
+    
     public func reload() {
         setNeedsDisplay()
     }
     
     open override func draw(_ rect: CGRect) {
+        print("draw")
+        
         addCircular()
         addItemsContainerView()
         addGesture()
         addItems()
     }
     
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        if originSize != frame.size {
+            originSize = frame.size
+            reload()
+        }
+    }
+    
     private func addGesture() {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction(_:)))
-        panGesture.minimumNumberOfTouches = 1
-        panGesture.maximumNumberOfTouches = 1
-        addGestureRecognizer(panGesture)
+        if panGesture == nil {
+            panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction(_:)))
+            panGesture?.minimumNumberOfTouches = 1
+            panGesture?.maximumNumberOfTouches = 1
+            addGestureRecognizer(panGesture!)
+        }
     }
     
     @objc private func panAction(_ recognizer: UIPanGestureRecognizer) {
@@ -109,8 +122,9 @@ open class InteractiveCircularMenu: UIView {
         let angle = transformToAngle(rotation: value)
         let offset = dataSource?.startAngleOffset?(self) ?? defaultStartAngleOffset
         let spacing = dataSource?.spacingAngle?(self) ?? defaultSpacingAngle
-        let maxAngle = dataSource?.maxAngle?(self) ?? defaultMaxAngle
-        let minAngle = dataSource?.minAngle?(self) ?? -(CGFloat(items.count)*spacing)
+        let maxAngle = dataSource?.maxAngle?(self) ?? 180-spacing
+        let sCount = items.count < 3 ? 0 : (items.count-2)
+        let minAngle = dataSource?.minAngle?(self) ?? -CGFloat(sCount)*spacing
         if angle > (maxAngle-offset) || angle < (minAngle-offset) {
             return
         }
@@ -166,6 +180,8 @@ open class InteractiveCircularMenu: UIView {
     }
     
     private func addCircular() {
+        circularLayer.removeFromSuperlayer()
+        
         circularLayer.frame = bounds
         
         let width = frame.size.width
@@ -199,6 +215,11 @@ open class InteractiveCircularMenu: UIView {
     }
     
     private func addItemsContainerView() {
+        for item in getItems() {
+            item.removeFromSuperview()
+        }
+        itemsContainerView.removeFromSuperview()
+        
         let width = frame.size.width
         let height = frame.size.height
         
