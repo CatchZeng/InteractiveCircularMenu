@@ -57,7 +57,7 @@ class ViewController: UIViewController {
         button10.setTitle("10", for: .normal)
         button10.backgroundColor = UIColor.red
         
-        items = [button1, button2, button3, button4, button5, button6, button7]//, button8, button9, button10]
+        items = [button1, button2, button3, button4, button5, button6, button7, button8, button9, button10]
         menuView.dataSource = self
         menuView.delegate = self
     }
@@ -74,6 +74,10 @@ extension ViewController: InteractiveCircularMenuDataSource {
     
     func menu(_ menu: InteractiveCircularMenu, itemSizeAt index: Int) -> CGSize {
         return CGSize(width: 40, height: 40)
+    }
+    
+    func spacingAngle(_ menu: InteractiveCircularMenu) -> CGFloat {
+        return 50
     }
 }
 

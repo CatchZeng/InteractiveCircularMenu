@@ -11,6 +11,9 @@ import UIKit
 open class InteractiveCircularMenu: UIView {
     public weak var dataSource: InteractiveCircularMenuDataSource?
     public weak var delegate: InteractiveCircularMenuDelegate?
+    private let defaultSpacingAngle: CGFloat = 25
+    private let defaultStartAngleOffset: CGFloat = 25
+    private let defaultMaxAngle: CGFloat = 90
     public var menuColor = UIColor(red: 41/255, green: 128/255, blue : 185/255, alpha: 1.0) {
         didSet {
             reload()
@@ -100,23 +103,25 @@ open class InteractiveCircularMenu: UIView {
     }
     
     private func placeItems(dX: CGFloat) {
-        let speedRatio = dataSource?.speedRatio(self) ?? 1.0
+        let items = getItems()
+        let speedRatio = dataSource?.speedRatio?(self) ?? 1.0
         let value = originRotation + dX/100.0*speedRatio
         let angle = transformToAngle(rotation: value)
-        if let maxAngle = dataSource?.maxAngle(self), let offset = dataSource?.startAngleOffset(self), angle > (maxAngle-offset) {
+        let offset = dataSource?.startAngleOffset?(self) ?? defaultStartAngleOffset
+        let spacing = dataSource?.spacingAngle?(self) ?? defaultSpacingAngle
+        let maxAngle = dataSource?.maxAngle?(self) ?? defaultMaxAngle
+        let minAngle = dataSource?.minAngle?(self) ?? -(CGFloat(items.count)*spacing)
+        if angle > (maxAngle-offset) || angle < (minAngle-offset) {
             return
         }
         
-        if let minAngle = dataSource?.minAngle(self), let offset = dataSource?.startAngleOffset(self), angle < (minAngle-offset) {
-            return
-        }
-        
-        print("angle: \(angle)")
         originRotation = value
         itemsContainerView.transform = CGAffineTransform(rotationAngle: originRotation)
-        for item in getItems() {
+        for item in items {
             item.transform = CGAffineTransform(rotationAngle: -originRotation)
         }
+        
+        updateItemsVisibility(items: items)
     }
     
     private func transformToAngle(rotation: CGFloat) -> CGFloat {
@@ -127,10 +132,11 @@ open class InteractiveCircularMenu: UIView {
         let width = frame.size.width
         originRotation = 0
         
+        let radius = width/2 - circularWidth/2
+        let offset = Double(dataSource?.startAngleOffset?(self) ?? defaultStartAngleOffset)/180.0*Double.pi
+        let spacing = Double(dataSource?.spacingAngle?(self) ?? defaultSpacingAngle)/180.0*Double.pi
+        
         for i in 0..<items.count {
-            let radius = width/2 - circularWidth/2
-            let offset = Double(dataSource?.startAngleOffset(self) ?? 0)/180.0*Double.pi
-            let spacing = Double(dataSource?.spacingAngle(self) ?? 0)/180.0*Double.pi
             let angle = Double.pi + Double(i)*spacing + offset
             
             let xx = cos(angle) * Double(radius)
@@ -140,6 +146,8 @@ open class InteractiveCircularMenu: UIView {
             item.center = CGPoint(x: xx,y: yy)
             item.transform = CGAffineTransform(rotationAngle: 0)
         }
+        
+        updateItemsVisibility(items: items)
     }
     
     fileprivate func getItems() -> [UIButton] {
@@ -199,5 +207,20 @@ open class InteractiveCircularMenu: UIView {
         itemsContainerView.layer.cornerRadius = width / 2
         addSubview(itemsContainerView)
         itemsContainerView.bounds = CGRect(x: -width/2, y: -height, width: width, height: height*2)
+    }
+    
+    private func updateItemsVisibility(items: [UIButton]) {
+        let spacing = dataSource?.spacingAngle?(self) ?? defaultSpacingAngle
+        let offset = dataSource?.startAngleOffset?(self) ?? defaultStartAngleOffset
+        let angle = transformToAngle(rotation: originRotation)
+        for i in 0..<items.count {
+            let item = items[i]
+            let placeAngle = offset + CGFloat(i)*spacing
+            if angle>(-placeAngle-10) && angle<(180-placeAngle+10) {
+                item.isHidden = false
+            } else {
+                item.isHidden = true
+            }
+        }
     }
 }
