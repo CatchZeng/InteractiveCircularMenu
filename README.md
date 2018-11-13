@@ -71,6 +71,12 @@ menuView.delegate = self
 menuView.menuColor = UIColor.white
 ```
 
+### Reload when dataSource changed.
+
+```
+menuView.reload()
+```
+
 ### Implement dataSource & delegate
 
 ```swift
