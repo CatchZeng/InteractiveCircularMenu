@@ -22,7 +22,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ojx-4O-pSj" customClass="InteractiveCircularMenu" customModule="InteractiveCircularMenu">
-                                <rect key="frame" x="224" y="281.33333333333331" width="448" height="224"/>
+                                <rect key="frame" x="224" y="198.66666666666663" width="448" height="224"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ojx-4O-pSj" secondAttribute="height" multiplier="2:1" id="EqG-Hd-V8E"/>
@@ -32,8 +32,8 @@
                         <color key="backgroundColor" red="0.90196078431372551" green="0.94509803921568625" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="ojx-4O-pSj" firstAttribute="width" secondItem="kh9-bI-dsS" secondAttribute="width" multiplier="0.5" id="LKB-gV-efi"/>
-                            <constraint firstItem="ojx-4O-pSj" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" multiplier="1.9" id="Qgb-rc-2NQ"/>
                             <constraint firstItem="ojx-4O-pSj" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="klC-67-oi5"/>
+                            <constraint firstItem="ojx-4O-pSj" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" multiplier="1.5" id="xnX-VN-XP0"/>
                         </constraints>
                     </view>
                     <connections>

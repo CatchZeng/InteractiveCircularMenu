@@ -20,7 +20,20 @@ class ViewController: UIViewController {
         items = [createItems(number: 1),
         createItems(number: 2),
         createItems(number: 3),
-        createItems(number: 4)]
+        createItems(number: 4),
+        createItems(number: 5),
+        createItems(number: 6),
+        createItems(number: 7),
+        createItems(number: 8),
+        createItems(number: 9),
+        createItems(number: 10),
+        createItems(number: 11),
+        createItems(number: 12),
+        createItems(number: 13),
+        createItems(number: 14),
+        createItems(number: 15),
+        createItems(number: 16),
+        createItems(number: 17)]
 
         menuView.dataSource = self
         menuView.delegate = self
@@ -28,7 +41,8 @@ class ViewController: UIViewController {
     }
 
     private func createItems(number: Int) -> CircularMenuItem {
-        let item = UIImageView(image: UIImage(named: "l\(number)"))
+        let value = number%4
+        let item = UIImageView(image: UIImage(named: "l\(value)"))
         item.contentMode = .scaleAspectFit
         return item
     }
@@ -73,8 +87,8 @@ extension ViewController: InteractiveCircularMenuDataSource {
 
 extension ViewController: InteractiveCircularMenuDelegate {
     func menu(_ menu: InteractiveCircularMenu, didSelectAt index: Int) {
-        AlertControllerBuilder(title: "提示",
-                               message: "点击了:\(index+1)").addAction(title: "OK") { (_) in
+        AlertControllerBuilder(title: "Tip",
+                               message: "Click:\(index+1)").addAction(title: "OK") { (_) in
         }.build().show()
     }
 }
