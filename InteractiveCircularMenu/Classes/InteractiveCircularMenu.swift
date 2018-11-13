@@ -118,9 +118,9 @@ open class InteractiveCircularMenu: UIView {
 
                 item.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
                 item.tag = i
-//                item.addTarget(self, action: #selector(onItemClicked(_:)), for: .touchUpInside)
                 let tap = UITapGestureRecognizer(target: self, action: #selector(onItemClicked(_:)))
                 item.addGestureRecognizer(tap)
+                item.isUserInteractionEnabled = true
                 itemsContainerView.addSubview(item)
             }
         }
