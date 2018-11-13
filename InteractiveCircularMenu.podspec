@@ -9,6 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'InteractiveCircularMenu'
   s.version          = '0.1.0'
+  s.swift_version    = '4.2'
   s.summary          = 'Interactive circular menu'
   s.description      = 'Interactive, infinite, springback, customizable(color, width, speed, angles) circular menu.'
   s.homepage         = 'https://github.com/catchzeng/InteractiveCircularMenu'
@@ -18,3 +19,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '9.0'
   s.source_files = 'InteractiveCircularMenu/Classes/**/*'
 end
+
+
