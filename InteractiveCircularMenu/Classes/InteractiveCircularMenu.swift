@@ -11,7 +11,7 @@ import UIKit
 open class InteractiveCircularMenu: UIView {
     public weak var dataSource: InteractiveCircularMenuDataSource?
     public weak var delegate: InteractiveCircularMenuDelegate?
-    public var menuColor = UIColor(red: 41/255, green: 128/255, blue : 185/255, alpha: 1.0) {
+    public var menuColor = UIColor(red: 41/255, green: 128/255, blue: 185/255, alpha: 1.0) {
         didSet {
             reload()
         }
@@ -22,7 +22,7 @@ open class InteractiveCircularMenu: UIView {
     private var originPoint = CGPoint()
     private var originSize = CGSize.zero
     private var panGesture: UIPanGestureRecognizer?
-    
+
     private var itemCount: Int {
         return dataSource?.numberOfItems(in: self) ?? 0
     }
@@ -51,18 +51,18 @@ open class InteractiveCircularMenu: UIView {
     private var startAngleOffset: CGFloat {
         return dataSource?.startAngleOffset?(self) ?? 25
     }
-    
+
     public func reload() {
         setNeedsDisplay()
     }
-    
+
     open override func draw(_ rect: CGRect) {
         addCircular()
         addItemsContainerView()
         addGesture()
         addItems()
     }
-    
+
     open override func layoutSubviews() {
         super.layoutSubviews()
         if originSize != frame.size {
@@ -70,7 +70,7 @@ open class InteractiveCircularMenu: UIView {
             reload()
         }
     }
-    
+
     private func addGesture() {
         if panGesture == nil {
             panGesture = UIPanGestureRecognizer(target: self, action: #selector(panAction(_:)))
@@ -79,18 +79,18 @@ open class InteractiveCircularMenu: UIView {
             addGestureRecognizer(panGesture!)
         }
     }
-    
+
     @objc private func panAction(_ recognizer: UIPanGestureRecognizer) {
         let items = getItems()
         guard items.count > 0 else { return }
-        
+
         switch recognizer.state {
         case .began:
             originPoint = recognizer.location(in: self)
             for item in items {
                 item.isUserInteractionEnabled = false
             }
-            
+
         case .changed:
             for item in items {
                 item.isUserInteractionEnabled = false
@@ -98,7 +98,7 @@ open class InteractiveCircularMenu: UIView {
             let changeX = recognizer.location(in: self).x - originPoint.x
             placeItems(dX: changeX)
             originPoint = recognizer.location(in: self)
-            
+
         case .ended:
             for item in items {
                 item.isUserInteractionEnabled = true
@@ -109,27 +109,31 @@ open class InteractiveCircularMenu: UIView {
             break
         }
     }
-    
+
     private func addItems() {
-        var items: [UIButton] = [UIButton]()
+        var items: [CircularMenuItem] = [CircularMenuItem]()
         for i in 0..<itemCount {
             if let item = dataSource?.menu(self, itemAt: i), let size = dataSource?.menu(self, itemSizeAt: i) {
                 items.append(item)
-                
+
                 item.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
                 item.tag = i
-                item.addTarget(self, action: #selector(onItemClicked(_:)), for: .touchUpInside)
+//                item.addTarget(self, action: #selector(onItemClicked(_:)), for: .touchUpInside)
+                let tap = UITapGestureRecognizer(target: self, action: #selector(onItemClicked(_:)))
+                item.addGestureRecognizer(tap)
                 itemsContainerView.addSubview(item)
             }
         }
-        
+
         placeItems(items)
     }
-    
-    @objc func onItemClicked(_ sender: UIButton){
-        delegate?.menu(self, didSelectAt: sender.tag)
+
+    @objc func onItemClicked(_ recognizer: UIPanGestureRecognizer) {
+        if let tag = recognizer.view?.tag {
+            delegate?.menu(self, didSelectAt: tag)
+        }
     }
-    
+
     private func placeItems(dX: CGFloat) {
         let items = getItems()
         let value = originRotation + dX/100.0*speedRatio
@@ -137,28 +141,28 @@ open class InteractiveCircularMenu: UIView {
         if angle > (maxAngle-startAngleOffset) || angle < (minAngle-startAngleOffset) {
             return
         }
-        
+
         originRotation = value
         itemsContainerView.transform = CGAffineTransform(rotationAngle: originRotation)
         for item in items {
             item.transform = CGAffineTransform(rotationAngle: -originRotation)
         }
-        
+
         updateItemsVisibility(items: items)
     }
-    
+
     private func springBack() {
         let angle = transformToAngle(rotation: originRotation)
         if angle > maxSpringBackAngle-startAngleOffset {
             let value = (maxSpringBackAngle-startAngleOffset)/180.0*CGFloat.pi
             doSpringbackAnimation(value)
-            
+
         } else if angle < minSpringBackAngle-startAngleOffset {
             let value = (minSpringBackAngle-startAngleOffset)/180.0*CGFloat.pi
             doSpringbackAnimation(value)
         }
     }
-    
+
     fileprivate func doSpringbackAnimation(_ value: CGFloat) {
         originRotation = value
         let items = self.getItems()
@@ -170,43 +174,43 @@ open class InteractiveCircularMenu: UIView {
         }
         updateItemsVisibility(items: items)
     }
-    
+
     private func transformToAngle(rotation: CGFloat) -> CGFloat {
         return rotation*(180.0/CGFloat.pi)
     }
-    
-    private func placeItems(_ items: [UIButton]) {
+
+    private func placeItems(_ items: [CircularMenuItem]) {
         let width = frame.size.width
         originRotation = 0
-        
+
         let radius = width/2 - circularWidth/2
         let offset = startAngleOffset/180.0*CGFloat.pi
         let spacing = spacingAngle/180.0*CGFloat.pi
-            
+
         for i in 0..<items.count {
             let angle = .pi + CGFloat(i)*spacing + offset
-            
+
             let xx = cos(angle) * radius
             let yy = sin(angle) * radius
-            
+
             let item = items[i]
-            item.center = CGPoint(x: xx,y: yy)
+            item.center = CGPoint(x: xx, y: yy)
             item.transform = CGAffineTransform(rotationAngle: 0)
         }
-        
+
         updateItemsVisibility(items: items)
     }
-    
+
     private func addCircular() {
         circularLayer.removeFromSuperlayer()
-        
+
         circularLayer.frame = bounds
-        
+
         let width = frame.size.width
         let height = frame.size.height
-        
+
         menuColor.set()
-        
+
         let path = UIBezierPath()
         path.lineWidth = 1.0
         path.move(to: CGPoint(x: 0, y: height))
@@ -222,10 +226,10 @@ open class InteractiveCircularMenu: UIView {
                     endAngle: CGFloat(Double.pi),
                     clockwise: false)
         path.addLine(to: CGPoint(x: 0, y: height))
-        
+
         path.fill()
         path.close()
-        
+
         circularLayer.path = path.cgPath
         circularLayer.fillColor = UIColor.clear.cgColor
         circularLayer.backgroundColor = UIColor.clear.cgColor
@@ -235,24 +239,24 @@ open class InteractiveCircularMenu: UIView {
         circularLayer.shadowRadius = 4.0
         layer.addSublayer(circularLayer)
     }
-    
+
     private func addItemsContainerView() {
         for item in getItems() {
             item.removeFromSuperview()
         }
         itemsContainerView.removeFromSuperview()
-        
+
         let width = frame.size.width
         let height = frame.size.height
-        
+
         itemsContainerView.frame = CGRect(x: 0, y: 0, width: width, height: height*2)
         itemsContainerView.backgroundColor = UIColor.clear
         itemsContainerView.layer.cornerRadius = width / 2
         addSubview(itemsContainerView)
         itemsContainerView.bounds = CGRect(x: -width/2, y: -height, width: width, height: height*2)
     }
-    
-    private func updateItemsVisibility(items: [UIButton]) {
+
+    private func updateItemsVisibility(items: [CircularMenuItem]) {
         let angle = transformToAngle(rotation: originRotation)
         for i in 0..<items.count {
             let item = items[i]
@@ -264,13 +268,13 @@ open class InteractiveCircularMenu: UIView {
             }
         }
     }
-    
-    private func getItems() -> [UIButton] {
+
+    private func getItems() -> [CircularMenuItem] {
         if itemCount < 1 {
             return []
         }
-        
-        var items: [UIButton] = [UIButton]()
+
+        var items: [CircularMenuItem] = [CircularMenuItem]()
         for i in 0..<itemCount {
             if let item = dataSource?.menu(self, itemAt: i) {
                 items.append(item)

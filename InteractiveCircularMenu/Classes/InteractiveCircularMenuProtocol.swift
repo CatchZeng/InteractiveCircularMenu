@@ -8,9 +8,11 @@
 import Foundation
 import UIKit
 
+public typealias CircularMenuItem = UIView
+
 @objc public protocol InteractiveCircularMenuDataSource: class {
     func numberOfItems(in menu: InteractiveCircularMenu) -> Int
-    func menu(_ menu: InteractiveCircularMenu, itemAt index: Int) -> UIButton
+    func menu(_ menu: InteractiveCircularMenu, itemAt index: Int) -> CircularMenuItem
     func menu(_ menu: InteractiveCircularMenu, itemSizeAt index: Int) -> CGSize
     func circularWidth(in menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func speedRatio(_ menu: InteractiveCircularMenu) -> CGFloat

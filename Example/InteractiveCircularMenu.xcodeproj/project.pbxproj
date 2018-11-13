@@ -174,6 +174,7 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				096CC5C07BFCD7D4151D13EC /* [CP] Embed Pods Frameworks */,
+				6223E1CD219A62350037EE72 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -287,6 +288,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-InteractiveCircularMenu_Example/Pods-InteractiveCircularMenu_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		6223E1CD219A62350037EE72 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		C22893382F6E48C1BB998B2C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
