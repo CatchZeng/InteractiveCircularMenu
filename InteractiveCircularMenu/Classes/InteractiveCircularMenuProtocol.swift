@@ -10,9 +10,13 @@ import UIKit
 
 public typealias CircularMenuItem = UIView
 
-@objc public protocol InteractiveCircularMenuDataSource: class {
+public protocol InteractiveCircularMenuDataSource: class {
     func numberOfItems(in menu: InteractiveCircularMenu) -> Int
     func menu(_ menu: InteractiveCircularMenu, itemAt index: Int) -> CircularMenuItem
+}
+
+@objc public protocol InteractiveCircularMenuDelegate: class {
+    func menu(_ menu: InteractiveCircularMenu, didSelectAt index: Int)
     func menu(_ menu: InteractiveCircularMenu, itemSizeAt index: Int) -> CGSize
     func circularWidth(in menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func speedRatio(_ menu: InteractiveCircularMenu) -> CGFloat
@@ -22,8 +26,4 @@ public typealias CircularMenuItem = UIView
     @objc optional func minAngle(_ menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func minSpringBackAngle(_ menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func maxSpringBackAngle(_ menu: InteractiveCircularMenu) -> CGFloat
-}
-
-public protocol InteractiveCircularMenuDelegate: class {
-    func menu(_ menu: InteractiveCircularMenu, didSelectAt index: Int)
 }

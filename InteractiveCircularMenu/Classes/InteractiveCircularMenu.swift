@@ -27,29 +27,29 @@ open class InteractiveCircularMenu: UIView {
         return dataSource?.numberOfItems(in: self) ?? 0
     }
     private var maxAngle: CGFloat {
-        return dataSource?.maxAngle?(self) ?? 180-spacingAngle
+        return delegate?.maxAngle?(self) ?? 180-spacingAngle
     }
     private var minAngle: CGFloat {
         let sCount = itemCount < 3 ? 0 : (itemCount-2)
-        return dataSource?.minAngle?(self) ?? -CGFloat(sCount)*spacingAngle
+        return delegate?.minAngle?(self) ?? -CGFloat(sCount)*spacingAngle
     }
     private var maxSpringBackAngle: CGFloat {
-        return dataSource?.maxSpringBackAngle?(self) ?? maxAngle-spacingAngle
+        return delegate?.maxSpringBackAngle?(self) ?? maxAngle-spacingAngle
     }
     private var minSpringBackAngle: CGFloat {
-        return dataSource?.minSpringBackAngle?(self) ?? minAngle+spacingAngle
+        return delegate?.minSpringBackAngle?(self) ?? minAngle+spacingAngle
     }
     private var spacingAngle: CGFloat {
-        return dataSource?.spacingAngle?(self) ?? 25
+        return delegate?.spacingAngle?(self) ?? 25
     }
     private var circularWidth: CGFloat {
-        return dataSource?.circularWidth(in: self) ?? 80
+        return delegate?.circularWidth(in: self) ?? 80
     }
     private var speedRatio: CGFloat {
-        return dataSource?.speedRatio?(self) ?? 1.0
+        return delegate?.speedRatio?(self) ?? 1.0
     }
     private var startAngleOffset: CGFloat {
-        return dataSource?.startAngleOffset?(self) ?? 25
+        return delegate?.startAngleOffset?(self) ?? 25
     }
 
     public func reload() {
@@ -113,7 +113,7 @@ open class InteractiveCircularMenu: UIView {
     private func addItems() {
         var items: [CircularMenuItem] = [CircularMenuItem]()
         for i in 0..<itemCount {
-            if let item = dataSource?.menu(self, itemAt: i), let size = dataSource?.menu(self, itemSizeAt: i) {
+            if let item = dataSource?.menu(self, itemAt: i), let size = delegate?.menu(self, itemSizeAt: i) {
                 items.append(item)
 
                 item.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)

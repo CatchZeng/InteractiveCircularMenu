@@ -56,6 +56,14 @@ extension ViewController: InteractiveCircularMenuDataSource {
     func menu(_ menu: InteractiveCircularMenu, itemAt index: Int) -> CircularMenuItem {
         return items[index]
     }
+}
+
+extension ViewController: InteractiveCircularMenuDelegate {
+    func menu(_ menu: InteractiveCircularMenu, didSelectAt index: Int) {
+        AlertControllerBuilder(title: "Tip",
+                               message: "Click:\(index+1)").addAction(title: "OK") { (_) in
+        }.build().show()
+    }
 
     func circularWidth(in menu: InteractiveCircularMenu) -> CGFloat {
         return 80
@@ -82,13 +90,5 @@ extension ViewController: InteractiveCircularMenuDataSource {
         let offset = startAngleOffset(menu)
         let spacing = spacingAngle(menu)
         return offset-spacing*CGFloat(items.count-1)
-    }
-}
-
-extension ViewController: InteractiveCircularMenuDelegate {
-    func menu(_ menu: InteractiveCircularMenu, didSelectAt index: Int) {
-        AlertControllerBuilder(title: "Tip",
-                               message: "Click:\(index+1)").addAction(title: "OK") { (_) in
-        }.build().show()
     }
 }
