@@ -24,6 +24,6 @@ public protocol InteractiveCircularMenuDataSource: class {
     @objc optional func spacingAngle(_ menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func maxAngle(_ menu: InteractiveCircularMenu) -> CGFloat
     @objc optional func minAngle(_ menu: InteractiveCircularMenu) -> CGFloat
-    @objc optional func minSpringBackAngle(_ menu: InteractiveCircularMenu) -> CGFloat
-    @objc optional func maxSpringBackAngle(_ menu: InteractiveCircularMenu) -> CGFloat
+    @objc optional func minSpringbackAngle(_ menu: InteractiveCircularMenu) -> CGFloat
+    @objc optional func maxSpringbackAngle(_ menu: InteractiveCircularMenu) -> CGFloat
 }

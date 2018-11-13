@@ -28,6 +28,33 @@ pod 'InteractiveCircularMenu'
 
 ![](https://raw.githubusercontent.com/CatchZeng/InteractiveCircularMenu/master/startAngleOffset.png)
 
+### SpeedRatio
+
+Interactive speed, default is 1.0 .
+
+### CircularWidth
+
+![](https://raw.githubusercontent.com/CatchZeng/InteractiveCircularMenu/master/circularWidth.png)
+
+### SpacingAngle
+
+![](https://raw.githubusercontent.com/CatchZeng/InteractiveCircularMenu/master/spacingAngle.png)
+
+### MaxAngle
+
+The max angle you can scroll.
+
+### MinAngle
+
+The min angle you can scroll.
+
+### MaxSpringbackAngle
+
+The max angle for springback, default is maxAngle-spacingAngle.
+
+### MinSpringbackAngle
+
+The min angle for springback, default is minAngle+spacingAngle.
 
 ## Usage
 
@@ -36,6 +63,12 @@ pod 'InteractiveCircularMenu'
 ```swift
 menuView.dataSource = self
 menuView.delegate = self
+```
+
+### Set menu color your like.
+
+```swift
+menuView.menuColor = UIColor.white
 ```
 
 ### Implement dataSource & delegate

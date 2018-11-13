@@ -33,11 +33,11 @@ open class InteractiveCircularMenu: UIView {
         let sCount = itemCount < 3 ? 0 : (itemCount-2)
         return delegate?.minAngle?(self) ?? -CGFloat(sCount)*spacingAngle
     }
-    private var maxSpringBackAngle: CGFloat {
-        return delegate?.maxSpringBackAngle?(self) ?? maxAngle-spacingAngle
+    private var maxSpringbackAngle: CGFloat {
+        return delegate?.maxSpringbackAngle?(self) ?? maxAngle-spacingAngle
     }
-    private var minSpringBackAngle: CGFloat {
-        return delegate?.minSpringBackAngle?(self) ?? minAngle+spacingAngle
+    private var minSpringbackAngle: CGFloat {
+        return delegate?.minSpringbackAngle?(self) ?? minAngle+spacingAngle
     }
     private var spacingAngle: CGFloat {
         return delegate?.spacingAngle?(self) ?? 25
@@ -153,12 +153,12 @@ open class InteractiveCircularMenu: UIView {
 
     private func springBack() {
         let angle = transformToAngle(rotation: originRotation)
-        if angle > maxSpringBackAngle-startAngleOffset {
-            let value = (maxSpringBackAngle-startAngleOffset)/180.0*CGFloat.pi
+        if angle > maxSpringbackAngle-startAngleOffset {
+            let value = (maxSpringbackAngle-startAngleOffset)/180.0*CGFloat.pi
             doSpringbackAnimation(value)
 
-        } else if angle < minSpringBackAngle-startAngleOffset {
-            let value = (minSpringBackAngle-startAngleOffset)/180.0*CGFloat.pi
+        } else if angle < minSpringbackAngle-startAngleOffset {
+            let value = (minSpringbackAngle-startAngleOffset)/180.0*CGFloat.pi
             doSpringbackAnimation(value)
         }
     }
