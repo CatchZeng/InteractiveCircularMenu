@@ -1,5 +1,5 @@
 PODS:
-  - InteractiveCircularMenu (0.1.0)
+  - InteractiveCircularMenu (0.1.1)
 
 DEPENDENCIES:
   - InteractiveCircularMenu (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  InteractiveCircularMenu: aa378ce36c36c12cf77bd31319fb14bc82c66d56
+  InteractiveCircularMenu: db7a8a72f9a7bc275070ba819c579b81427aedff
 
 PODFILE CHECKSUM: 0e6f9125e8cfebb9fdda8cde30e2a61984d2ac19
 
